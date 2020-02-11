@@ -81,7 +81,7 @@ extrainfo()
 
 	tput cup $(($verticallength+4)) 0; echo -e "\e[31m$(sensors | tail -n$(($(sensors | wc -l)-2)) | head -n$tparm | cut -d"(" -f1)"
 
-	tput cup $(($lines-4)) 0; echo -e "\e[33m$(date +%a" "%b" "%d" - "%Y)\n\e[39mWelcome \e[32m$(whoami)"
+	tput cup $(($lines-3)) 0; echo -e "\e[39mWelcome \e[32m$(id -u -n)\n\e[39mLast update: \e[33m$(date +%a" "%b" "%d" - "%Y)"
 
 	tput sgr 0
 }
