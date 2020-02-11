@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#tparm will set the amount of lines of your temp info, change it in order to show properly all your CPUs / cores.
+tparm=2
+
 #Lines to be displayed inside the hash symbol box
 arrlines=("example line 1" "example line 2")
 
@@ -24,7 +27,7 @@ draw()
 		tput cup $var 0; echo "#"
 	done
 	#Horizontal lower line
-    for var in $(seq 0 1 $cols)
+    	for var in $(seq 0 1 $cols)
 	do
 		tput cup $verticallength $var; echo "#"
 	done
@@ -49,7 +52,7 @@ colors()
 		tput cup $var 0; echo -e "\e[34m#"
 	done
 	#Horizontal lower line
-    for var in $(seq 0 1 $cols)
+    	for var in $(seq 0 1 $cols)
 	do
 		tput cup $verticallength $var; echo -e "\e[34m#"
 	done
@@ -70,19 +73,23 @@ drawarr()
 	done
 }
 
+extrainfo()
+{
+	tput sgr 0 
+
+	tput cup $(($verticallength+2)) 0; echo -e "Temperatures (\e[33m$(date +%H:%M:%S)\e[39m):"
+
+	tput cup $(($verticallength+4)) 0; echo -e "\e[31m$(sensors | tail -n$(($(sensors | wc -l)-2)) | head -n$tparm | cut -d"(" -f1)"
+
+	tput cup $(($lines-4)) 0; echo -e "\e[33m$(date +%a" "%b" "%d" - "%Y)\n\e[39mWelcome \e[32m$(whoami)"
+
+	tput sgr 0
+}
+
 draw
 drawarr
 colors
-tput sgr 0
-
-tput cup $(($verticallength+2)) 0; echo "Temperatures:"
-
-tput cup $(($verticallength+4)) 0; echo -e "\e[31m$(sensors | tail -n$(($(sensors | wc -l)-2)) | cut -d"(" -f1)"
-
-tput cup $(($lines-3)) 0; echo -e "\e[39mWelcome \e[32m$(whoami)"
-
-tput sgr 0
-
+extrainfo
 tput cup $lines 0
 
 
